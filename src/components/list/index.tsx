@@ -81,7 +81,7 @@ const GroceryList = (props: Props) => {
                         rowHeight={20}
                         rowCount={sortedProducts.length}
                         rowGetter={({ index }) => sortedProducts[index]}
-                        width={1000}>
+                        width={900}>
                         <Column
                             dataKey="id"
                             width={70}
@@ -89,19 +89,19 @@ const GroceryList = (props: Props) => {
                         />
                         <Column
                             dataKey="name"
-                            width={210}
+                            width={120}
                             disableSort
                             label="Название"
                         />
                         <Column
                             dataKey="type"
-                            width={210}
+                            width={160}
                             disableSort
                             label="тип"
                         />
                         <Column
                             dataKey="color"
-                            width={210}
+                            width={90}
                             disableSort
                             label="Цвет"
                         />
@@ -113,13 +113,13 @@ const GroceryList = (props: Props) => {
                         />
                         <Column
                             dataKey="inStock"
-                            width={210}
+                            width={130}
                             disableSort
                             label="В наличии"
                         />
                         <Column
                             dataKey="dateReceipt"
-                            width={210}
+                            width={190}
                             disableSort
                             label="Дата поступления"
                         />
