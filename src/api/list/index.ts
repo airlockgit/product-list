@@ -8,15 +8,15 @@ export const API = {
         let type: Array<string> = ['Верхняя одежда', 'Белье', 'Штаны'];
         let size: Array<string> = ['S', 'M', 'L', 'XL'];
 
-        for (let i = 0; i <= number; i++) {
+        for (let i = 1; i <= number; i++) {
             data.push({
                 id: i,
                 name: faker.name.firstName(),
                 type: random(type),
                 color: faker.internet.color(),
                 size: random(size),
-                inStock: true,
-                dateReceipt: faker.date.recent(),
+                inStock: false,
+                dateReceipt: '2019-09-15',
             })
         }
 
