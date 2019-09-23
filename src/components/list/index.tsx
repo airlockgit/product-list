@@ -1,75 +1,22 @@
-
-import React, { useState } from 'react';
-import { observable } from "mobx";
-import { observer } from "mobx-react-lite";
-import { clothingStore } from '../../stores/product-list';
-import { Select, Checkbox, DatePicker } from 'antd';
+import React from 'react';
+import { useProductsData, useFiltersData } from '../../hooks';
 import { Column, Table } from 'react-virtualized';
 import styles from './list.module.scss';
 import 'react-virtualized/styles.css';
+import { Filters, Select, Checkbox, Date } from '../filters';
 
-const { Option } = Select;
-const { RangePicker } = DatePicker;
+const GroceryList = () => {
+    const { sortedProducts } = useProductsData(store => ({
+        sortedProducts: store.sortedProducts,
+        products: store.products,
+    }));
 
-const useProducts = () => {
-    const [state] = useState(() => observable(clothingStore))
+    const { optionsList, updateFilter } = useFiltersData(store => ({
+        optionsList: store.optionsList,
+        updateFilter: store.updateFilter,
+    }));
 
-    return {
-        products: state.productsData,
-        sortedProducts: state.sortedProducts,
-        updateSort: state.updateSort,
-        all: state.all,
-    }
-};
 
-interface Props {
-    store?: any;
-}
-
-const GroceryList = (props: Props) => {
-    const { sortedProducts, products, updateSort, all: option_all } = useProducts();
-
-    const _handleSelectDate = (date: any, dateString: any) => {
-        updateSort({
-            date: dateString[0],
-            dateTo: dateString[1],
-        });
-    }
-
-    const _handleSelectType = (type: number | string) => {
-        updateSort({
-            type: type === option_all ? false : type,
-        });
-    }
-
-    const _handleSelectColor = (type: number | string) => {
-        updateSort({
-            color: type === option_all ? false : type,
-        });
-    }
-
-    const _handleSelectSize = (size: number | string) => {
-        updateSort({
-            size: size === option_all ? false : size,
-        });
-    }
-
-    const _handleCheckboxInStoke = (e: any) => {
-        let checked: boolean = e.target.checked;
-
-        updateSort({
-            inStock: checked,
-        });
-    }
-
-    const selectValueOptions = (option: any) => {
-        let types = products.map(item => item[option])
-            .filter((value, index, self) => self.indexOf(value) === index);
-
-        return types.map((type, i) => (
-            <Option value={type} key={i}>{type}</Option>
-        ))
-    };
 
     return (
         <div className={styles.container}>
@@ -125,75 +72,39 @@ const GroceryList = (props: Props) => {
                         />
                     </Table>
                 </div>
-                <div className={styles.section__options}>
-                    <table className={styles.table}>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <span className={styles.tableCellTitle}>Тип</span>
-                                </td>
-                                <td className={styles.tableCellForSwitch}>
-                                    <Select
-                                        className={styles.table__select}
-                                        defaultValue={option_all}
-                                        onChange={_handleSelectType}
-                                    >
-                                        <Option value={option_all}>Все</Option>
-                                        {selectValueOptions('type')}
-                                    </Select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span className={styles.tableCellTitle}>Цвет</span>
-                                </td>
-                                <td className={styles.tableCellForSwitch}>
-                                    <Select
-                                        className={styles.table__select}
-                                        defaultValue={option_all}
-                                        onChange={_handleSelectColor}
-                                    >
-                                        <Option value={option_all}>Все</Option>
-                                        {selectValueOptions('color')}
-                                    </Select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span className={styles.tableCellTitle}>Размер</span>
-                                </td>
-                                <td className={styles.tableCellForSwitch}>
-                                    <Select
-                                        className={styles.table__select}
-                                        defaultValue={option_all}
-                                        onChange={_handleSelectSize}
-                                    >
-                                        <Option value={option_all}>Все</Option>
-                                        {selectValueOptions('size')}
-                                    </Select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span className={styles.tableCellTitle}>В наличие</span>
-                                </td>
-                                <td className={styles.tableCellForSwitch}>
-                                    <Checkbox
-                                        onChange={_handleCheckboxInStoke}
-                                    />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className={styles.tableCellForDate} colSpan={2}>
-                                    <RangePicker onChange={_handleSelectDate} />
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <Filters>
+                    <Select
+                        title='Тип'
+                        options={optionsList('type')}
+                        defaultValue='all'
+                        defaultTitle='Все'
+                        change={(value: any) => updateFilter({ value, name: 'type', type: 'type', all: 'all' })}
+                    />
+                    <Select
+                        title='Цвет'
+                        options={optionsList('color')}
+                        defaultValue='all'
+                        defaultTitle='Все'
+                        change={(value: any) => updateFilter({ value, name: 'color', type: 'color', all: 'all' })}
+                    />
+                    <Select
+                        title='Размер'
+                        options={optionsList('size')}
+                        defaultValue='all'
+                        defaultTitle='Все'
+                        change={(value: any) => updateFilter({ value, name: 'size', type: 'size', all: 'all' })}
+                    />
+                    <Checkbox
+                        title='В наличие'
+                        change={(value: boolean) => updateFilter({ value, name: 'inStock', type: 'inStock', all: 'all' })}
+                    />
+                    <Date
+                        change={(value: any, name: string) => updateFilter({ value, name, type: 'dateReceipt', all: 'all' })}
+                    />
+                </Filters>
             </div>
         </div>
     )
 }
 
-export default observer(GroceryList);
+export default GroceryList;

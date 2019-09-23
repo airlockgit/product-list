@@ -1,5 +1,5 @@
 import faker from 'faker';
-import { Product } from '../../types/product';
+import { Product } from '../../stores/products';
 import { random } from '../../common';
 
 export const API = {

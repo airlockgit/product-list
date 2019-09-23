@@ -16,39 +16,3 @@
         flex: 0.3;
     }
 }
-
-.table {
-    display: block;
-    padding: 20px;
-    width: 100%;
-
-    &__header {
-        padding: 3px 10px;
-        text-align: center;
-    }
-
-    &__cell {
-        padding: 5px 10px;
-        vertical-align: middle;
-
-        &-title {
-            composes: table__cell;
-            display: inline-block;
-            width: 160px;
-            box-sizing: border-box;
-        }
-
-        &-for-switch {
-            composes: table__cell;
-            text-align: center;
-        }
-
-        &-for-date {
-            padding: 5px 10px;
-        }
-    }
-
-    &__select {
-        width: 120px;
-    }
-}
