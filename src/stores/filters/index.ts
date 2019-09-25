@@ -59,7 +59,7 @@ const checkConditions = (value_1: any, { type, all, value, name }: { type: strin
     let result = false;
 
     switch (type) {
-        case 'dateReceipt':
+        case 'dateReceipt' || 'date':
             if (name === 'date_2') {
                 if ((new Date(value_1) <= new Date(value)) || !value) {
                     result = true;

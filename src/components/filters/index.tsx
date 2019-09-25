@@ -36,9 +36,11 @@ export const Select: FunctionComponent<SelectProps> = ({
     classes = {}, options = [], title, defaultValue, defaultTitle, change
 }) => {
 
-    const selectValueOptions = () => options.map((type: any, i: number) => (
-        <Option className={classes.option} value={type} key={i} > {type} </Option>
-    ));
+    const selectValueOptions = () => {
+        return options.map((type: any, i: number) => (
+            <Option className={classes.option} value={type} key={i} > {type} </Option>
+        ));
+    }
 
     return (
         <tr>
@@ -51,10 +53,8 @@ export const Select: FunctionComponent<SelectProps> = ({
                     defaultValue={defaultValue}
                     onChange={change}
                 >
-                    {
-                        <Option value={defaultValue}>{defaultTitle}</Option>
-                    }
-                    {selectValueOptions()}
+                    <Option value={defaultValue}>{defaultTitle}</Option>
+                    {options.length > 0 ? selectValueOptions() : null}
                 </SelectAntd>
             </td>
         </tr>

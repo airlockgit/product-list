@@ -16,8 +16,6 @@ const GroceryList = () => {
         updateFilter: store.updateFilter,
     }));
 
-
-
     return (
         <div className={styles.container}>
             <div className={styles.section}>
